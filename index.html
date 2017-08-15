@@ -6,15 +6,45 @@
         <link href="css/main.css" rel="stylesheet">
     </head>
     <body>
-        
-        <main class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="jumbotron">
-                        <p>GemStore</p>
+        <main class="container" ng-app="myApp">
+            <div class="row" ng-controller="myController">
+                <div class="col-xs-4" ng-repeat="product in Model">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            {{product.name}}
+                        </div>
+                        <div class="panel-body">
+                            <span class="pull-right">
+                            {{product.price || currency}}
+                            </span>
+                            <p ng-repeat="image in product.images">
+                                <img ng-src="{{image.full}}">
+                            </p>
+                            <section ng-init="tab = 1" ng-controller="panelController">
+                                <ul class="nav nav-pills">
+                                    <li ng-class="{active:tab===1}"><a href ng-click="selectTab(1)">Description</a></li>
+                                    <li ng-class="{active:tab===2}"><a href ng-click="selectTab(2)">Specifications</a></li>
+                                    <li ng-class="{active:tab===3}"><a href ng-click="selectTab(3)">Reviews</a></li>
+                                </ul>
+                                <div class="panel" ng-show="tab === 1">
+                                    <h4>Description</h4>
+                                    <p>{{product.description}}</p>
+                                </div>
+                                <div class="panel" ng-show="tab === 2">
+                                    <h4>Specifications</h4>
+                                    <blockquote>In Development</blockquote>
+                                </div>
+                                <div class="panel" ng-show="tab === 3">
+                                    <h4>Reviews</h4>
+                                    <blockquote>In Development</blockquote>
+                                </div>
+                            </section>
+                            <button ng-hide="product.canPurchase" class="btn btn-default">Add to cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
+        <!-- <my-directive></my-directive> -->
         </main>
         
         <script src="bootstrap/js/jquery-3.2.1.js"></script>
