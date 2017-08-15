@@ -8,6 +8,13 @@ var products = [
             {
                 full: "gem-01.gif"
             }
+        ],
+        reviews: [
+            {
+                stars: 5,
+                body: "I love this product",
+                author: "Andrew Byerly"
+            }
         ]
     },
     {
@@ -33,6 +40,19 @@ angular.module("myApp").controller("panelController", function($scope){
     $scope.tab = 1;
     $scope.selectTab = function(newTab) {
         $scope.tab = newTab;
+    }
+});
+
+angular.module("myApp").controller("reviewsController", function($scope){
+    $scope.newReview = {};
+    $scope.addReview = function(product) {
+        if (!product.reviews) {
+            product.reviews = [];
+        }
+        product.reviews.push($scope.newReview);
+        
+        $scope.newReview = {};
+        $scope.reviewForm.$setPristine();
     }
 });
 
