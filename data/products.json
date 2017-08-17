@@ -1,0 +1,22 @@
+[{
+    "name": "Dodecahedron",
+    "price": 2.95,
+    "description": "Some gems have hidden qualities beyond their lustre, beyond their shine... Dodecahedron is one of those gems.",
+    "canPurchase": false,
+    "images": [{
+        "full": "gem-01.gif"
+    }],
+    "reviews": [{
+        "stars": 5,
+        "body": "I love this product",
+        "author": "Andrew Byerly"
+    }]
+}, {
+    "name": "Pentagonal",
+    "price": 5.95,
+    "description": "The pentagonal gem's origin is unknown, hence its low price.",
+    "canPurchase": false,
+    "images": [{
+        "full": "gem-02.gif"
+    }]
+}]

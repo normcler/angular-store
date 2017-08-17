@@ -1,63 +1,49 @@
-var products = [
-    {
-        name: "Dodecahedron",
-        price: 2.95,
-        description: "Some gems have hidden qualities beyond their lustre, beyond their shine... Dodecahedron is one of those gems.",
-        canPurchase: false,
-        images: [
-            {
-                full: "gem-01.gif"
-            }
-        ],
-        reviews: [
-            {
-                stars: 5,
-                body: "I love this product",
-                author: "Andrew Byerly"
-            }
-        ]
-    },
-    {
-        name: "Pentagonal",
-        price: 5.95,
-        description: "The pentagonal gem's origin is unknown, hence its low price.",
-        canPurchase: false,
-        images: [
-            {
-                full: "gem-02.gif"
-            }
-        ]
-    }
-];
+angular.module("myApp", ["storeProducts", "avatar", "ngRoute"]);
 
-angular.module("myApp", []);
+angular.module("myApp").config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) { //$locationProvider.html5Mode(true);
+    $routeProvider.when("/", {
+        templateUrl: "templates/main.html"
+    }).when("/page1", {
+        templateUrl: "templates/page1.html"
+    }).when("/page2", {
+        templateUrl: "templates/page2.html",
+        controller: function () {}
+    });
+}])
 
-angular.module("myApp").controller("myController", function($scope){
-    $scope.Model = products;
-});
-
-angular.module("myApp").controller("panelController", function($scope){
-    $scope.tab = 1;
-    $scope.selectTab = function(newTab) {
-        $scope.tab = newTab;
-    }
-});
-
-angular.module("myApp").controller("reviewsController", function($scope){
-    $scope.newReview = {};
-    $scope.addReview = function(product) {
-        if (!product.reviews) {
-            product.reviews = [];
+angular.module("myApp").controller(
+    "myController", ['$scope', '$http', 'AvatarFactory', function ($scope, $http, AvatarFactory) {
+        $scope.Register = function () {
+            firebase.auth().createUserWithEmailAndPassword($scope.email, $scope.password).catch(function (error) {
+                varerrorCode = error.code;
+                varerrorMessage = error.message; //...
+            });
         }
-        product.reviews.push($scope.newReview);
+        $scope.Login = function () {
+            firebase.auth().signInWithEmailAndPassword($scope.email, $scope.password).catch(function (error) {
+                varerrorCode = error.code;
+                varerrorMessage = error.message; //...
+            });
+        }
+        $scope.Logout = function () {
+            firebase.auth().signOut();
+        }
+        $scope.OnAuthStateChanged = firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                $scope.authenticated = true;
+                $scope.$apply();
+            } else {
+                $scope.authenticated = false;
+                $scope.$apply();
+            }
+        })
         
-        $scope.newReview = {};
-        $scope.reviewForm.$setPristine();
-    }
-});
+        $scope.Avatar = AvatarFactory;
 
-angular.module("myApp").directive("myDirective", function(){
-    return {
-        template: "<div>this is a custom directive</div>"
-    };
-});
+        $http.get("data/products.json").then(function (result) {
+            $scope.Model = result.data;
+        }, function (error) {
+            console.log(error.message);
+        });
+                    }]
+);
